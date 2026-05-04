@@ -6,6 +6,9 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
 import com.facebook.react.ReactNativeApplicationEntryPoint.loadReactNative
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
+import org.opencv.android.OpenCVLoader
+import android.util.Log
+import com.markerdetection.markerFunctions.MarkerDetectorPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -16,6 +19,7 @@ class MainApplication : Application(), ReactApplication {
         PackageList(this).packages.apply {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // add(MyReactNativePackage())
+          add(MarkerDetectorPackage())
         },
     )
   }
@@ -23,5 +27,11 @@ class MainApplication : Application(), ReactApplication {
   override fun onCreate() {
     super.onCreate()
     loadReactNative(this)
+
+    if (!OpenCVLoader.initDebug()) {
+        Log.e("OpenCV", "Initialization failed")
+    } else {
+        Log.d("OpenCV", "OpenCV initialized")
+    }
   }
 }
